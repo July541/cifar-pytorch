@@ -1,22 +1,21 @@
+import sys
+
 import torch
-from lenet import LeNet
-from utils import train, load_data
+
+import trainer
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-print(f"train on {device}")
-
 
 classes = ('plane', 'car', 'bird', 'cat', 'deer', 'dog', 'frog', 'horse', 'ship', 'truck')
-
-
-def main():
-    train_iter, test_iter = load_data()
-    net = LeNet()
-    lr = 0.001
-    epoch_num = 120
-    optimizer = torch.optim.Adam(net.parameters(), lr=lr)
-    train(net, train_iter, test_iter, optimizer, device, epoch_num)
-
+nets = {
+    "lenet": trainer.train_lenet,
+    "alexnet": trainer.train_alexnet
+}
 
 if __name__ == '__main__':
-    main()
+    net_name = sys.argv[1].lower()
+    if net_name not in nets.keys():
+        raise NotImplementedError(f"{net_name} not implemented.")
+
+    print(f"train {net_name} on {device}")
+    nets[net_name](device)
