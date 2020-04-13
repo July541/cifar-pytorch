@@ -44,7 +44,7 @@ def train(net, train_iter, test_iter, optimizer, device, num_epochs):
     train_l_sum, train_acc_sum, n, batch_count, t1 = 0.0, 0.0, 0, 0, time()
 
     for epoch in range(num_epochs):
-        if device == torch.device("cpu") or (epoch + 1) % 10 == 0:
+        if device == torch.device("cpu"):
             train_l_sum, train_acc_sum, n, batch_count, t1 = 0.0, 0.0, 0, 0, time()
 
         for X, y in train_iter:
@@ -66,3 +66,6 @@ def train(net, train_iter, test_iter, optimizer, device, num_epochs):
             test_acc = evaluate(test_iter, net)
             print("epoch {}, loss {:.4f}, train_acc {:.4f}, test_acc {:.4f}, time {:.1f} sec"
                   .format(epoch + 1, train_l_sum / batch_count, train_acc_sum / n, test_acc, time() - t1))
+
+            if (epoch + 1) % 10 == 0:
+                train_l_sum, train_acc_sum, n, batch_count, t1 = 0.0, 0.0, 0, 0, time()
