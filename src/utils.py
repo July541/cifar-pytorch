@@ -8,7 +8,7 @@ from torch.utils.data import DataLoader
 def load_data(batch_size=256, resize=None):
     trans = []
     if resize:
-        trans.append(torchvision.transforms.Resize(size=resize))
+        trans.append(torchvision.transforms.Resize(size=resize))  # for alexnet
     trans.append(torchvision.transforms.ToTensor())
     transformer = torchvision.transforms.Compose(trans)
 
@@ -28,7 +28,7 @@ def evaluate(data_iter, net: torch.nn.Module, device=None):
     acc, n = 0.0, 0
     with torch.no_grad():
         for X, y in data_iter:
-            net.eval()
+            net.eval()  # forbid dropout
             acc += (net(X.to(device)).argmax(dim=1) == y.to(device)).float().sum().cpu().item()
             net.train()
 

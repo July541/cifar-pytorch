@@ -23,10 +23,10 @@ class AlexNet(nn.Module):
         self.fc = nn.Sequential(
             nn.Linear(256 * 6 * 6, 4096),
             nn.ReLU(),
-            nn.Dropout(0.25),
+            nn.Dropout(0.5),
             nn.Linear(4096, 4096),
             nn.ReLU(),
-            nn.Dropout(0.25),
+            nn.Dropout(0.5),
             nn.Linear(4096, 10)
         )
 
